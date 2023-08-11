@@ -25,11 +25,34 @@ const addMenuName = () => {
       </li>`
   }
   $("#espresso-menu-list").insertAdjacentHTML("beforeEnd", menuItemTemplate(espressoMenuName))
-
-  const menuCount = $("#espresso-menu-list").querySelectorAll("li").length
-  $(".menu-count").innerText = `총 ${menuCount}개`
+  updateMenuCount()
   $("#espresso-menu-name").value = ""
 }
+const updateMenuCount = () => {
+  const menuCount = $("#espresso-menu-list").querySelectorAll("li").length
+  $(".menu-count").innerText = `총 ${menuCount}개`
+}
+const updateMenuName = (e) => {
+  //기존 값 가져오기
+  const $menuName = e.target.closest("li").querySelector(".menu-name")
+  //변경된 값 넣기
+  const updatedMenuName = prompt("변경할 값을 입력해주세요", $menuName.innerText)
+  $menuName.innerText = updatedMenuName
+}
+
+$("#espresso-menu-list").addEventListener("click", (e) => {
+  //수정기능
+  if (e.target.classList.contains("menu-edit-button")) {
+    updateMenuName(e)
+  }
+  //삭제기능
+  if (e.target.classList.contains("menu-remove-button")) {
+    if (confirm("삭제?")) {
+      e.target.closest("li").remove()
+      updateMenuCount()
+    }
+  }
+})
 
 //form태그 전송 방지
 $("#espresso-menu-form").addEventListener("submit", (e) => {
